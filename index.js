@@ -1,7 +1,8 @@
 const request = require('request-promise').defaults({ jar: true});
 const cheerio = require('cheerio');
+const express = require('express');
 
-
+const app = express();
 
 async function getAttendance( admissionNum ){
     const result =  await request.get("http://mbccet.com/login.php");
@@ -52,7 +53,6 @@ async function getAttendance( admissionNum ){
 
 
 
-
 const { Client, Intents } = require("discord.js");
 require('dotenv').config();
 
@@ -70,11 +70,11 @@ client.once("ready", ()=>{
 client.on("messageCreate", message =>{
     if( message.content.startsWith("#")){
         if(message.content.substring(1,4)==='get'){
-           getAttendance( message.content.substring(4).trim() ).then(( result )=>{
-               message.reply( result );
-           }).catch(( err )=>{
-            message.reply(" Please check your query again or try later.")
-           });
+            getAttendance( message.content.substring(4).trim() ).then(( result )=>{
+                message.reply( result );
+            }).catch(( err )=>{
+                message.reply(" Please check your query again or try later.")
+            });
         }else{
             message.reply("Invalid request!!")
         }
@@ -85,9 +85,11 @@ client.on("messageCreate", message =>{
 
 client.login(
     process.env.TOKEN
-);
-
-
-
-
-
+    );
+    
+    
+    
+    
+    
+    
+    app.listen(process.env.PORT)
